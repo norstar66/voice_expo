@@ -7,6 +7,7 @@ import { ClientToServerEvents, ServerToClientEvents } from './events/types';
 import { StationId } from './stations/types';
 import { store } from './tickets/store';
 import { MockGenerator } from './mock-generator';
+import { inventoryStore } from './inventory/store';
 
 const app = express();
 app.use(cors({ origin: config.corsOrigin }));
@@ -55,7 +56,7 @@ io.on('connection', (socket) => {
     socket.join(stationId);
     
     // Send initial state
-    const tickets = store.getTicketsForStation(stationId);
+    const tickets = store.getTicketsForStation(stationId as StationId);
     socket.emit('INITIAL_STATE', tickets);
   });
 
@@ -75,9 +76,17 @@ io.on('connection', (socket) => {
 
   socket.on('TICKET_ITEM_DONE', ({ ticketId, itemId, stationId }) => {
     console.log(`[${stationId}] Marked item ${itemId} in ticket ${ticketId} as DONE`);
-    const updatedTicket = store.updateItemStatus(ticketId, itemId, 'DONE', stationId);
+    const updatedTicket = store.updateItemStatus(ticketId, itemId, 'DONE', stationId as StationId);
     
     if (updatedTicket) {
+      // Record sale in inventory
+      const item = updatedTicket.items.find(i => i.id === itemId);
+      if (item) {
+        inventoryStore.recordSale(item.name);
+        // Broadcast inventory update
+        io.emit('INVENTORY_UPDATE', inventoryStore.getAll());
+      }
+
       // Broadcast update to EXPO and relevant stations
       io.to('EXPO').emit('TICKET_UPDATED', updatedTicket);
       
@@ -99,6 +108,24 @@ io.on('connection', (socket) => {
       updatedTicket.items.forEach(item => item.stations.forEach(s => relevantStations.add(s)));
       relevantStations.forEach(s => io.to(s).emit('TICKET_UPDATED', updatedTicket));
     }
+  });
+
+  // --- Inventory Events ---
+
+  socket.on('INVENTORY_SUBSCRIBE', () => {
+    socket.emit('INVENTORY_UPDATE', inventoryStore.getAll());
+  });
+
+  socket.on('INVENTORY_ACTION', (action) => {
+    console.log(`[Inventory] Action: ${action.type} on ${action.ingredientId} (${action.amount})`);
+    inventoryStore.recordAction(action);
+    io.emit('INVENTORY_UPDATE', inventoryStore.getAll());
+  });
+
+  socket.on('INVENTORY_ADD_ITEM', (item) => {
+    console.log(`[Inventory] Adding item: ${item.name}`);
+    inventoryStore.addIngredient(item.name, item.unit, item.type);
+    io.emit('INVENTORY_UPDATE', inventoryStore.getAll());
   });
 
   socket.on('disconnect', () => {

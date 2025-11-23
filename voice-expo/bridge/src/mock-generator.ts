@@ -4,15 +4,10 @@ import { Ticket, TicketItem } from './tickets/types';
 import { StationId } from './stations/types';
 import { store } from './tickets/store';
 
-const MENU_ITEMS: { name: string; stations: StationId[] }[] = [
-  { name: 'Caesar Salad', stations: ['SALAD'] },
-  { name: 'Chicken Piccata', stations: ['GRILL/SAUTE1', 'SALAD'] },
-  { name: 'Spaghetti Carbonara', stations: ['SAUTE2'] },
-  { name: 'Fried Calamari', stations: ['FRY'] },
-  { name: 'Margherita Pizza', stations: ['PIZZA'] },
-  { name: 'Toasted Ravioli', stations: ['FRY'] },
-  { name: 'Grilled Salmon', stations: ['GRILL/SAUTE1'] },
-];
+import { MENU_ITEMS } from './data/menu';
+
+// Removed hardcoded MENU_ITEMS in favor of imported data
+
 
 export class MockGenerator {
   private io: Server;
