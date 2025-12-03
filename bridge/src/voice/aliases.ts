@@ -1,6 +1,15 @@
-import { StationId } from '../stations/types';
-
 const normalize = (value: string): string => value.trim().toLowerCase();
+
+const resolveAlias = <T extends { phrases: string[] }>(
+  phrase: string,
+  collection: T[]
+): T | undefined => {
+  const target = normalize(phrase);
+
+  return collection.find((entry) =>
+    entry.phrases.some((candidate) => normalize(candidate) === target)
+  );
+};
 
 export interface ActionAlias {
   phrases: string[]; // "calimari", "cali", "fried squid"
@@ -9,7 +18,7 @@ export interface ActionAlias {
 
 export interface StationAlias {
   phrases: string[]; // "grill", "saute", "on the line"
-  stationId: StationId;
+  stationId: string;
 }
 
 export interface VoiceActionAlias {
@@ -24,28 +33,16 @@ export interface AliasRegistry {
 }
 
 export function resolveItemAlias(phrase: string, registry: AliasRegistry): ActionAlias | undefined {
-  const target = normalize(phrase);
-
-  return registry.items.find((item) =>
-    item.phrases.some((candidate) => normalize(candidate) === target)
-  );
+  return resolveAlias(phrase, registry.items);
 }
 
 export function resolveStationAlias(phrase: string, registry: AliasRegistry): StationAlias | undefined {
-  const target = normalize(phrase);
-
-  return registry.stations.find((station) =>
-    station.phrases.some((candidate) => normalize(candidate) === target)
-  );
+  return resolveAlias(phrase, registry.stations);
 }
 
 export function resolveVoiceActionAlias(
   phrase: string,
   registry: AliasRegistry
 ): VoiceActionAlias | undefined {
-  const target = normalize(phrase);
-
-  return registry.actions.find((action) =>
-    action.phrases.some((candidate) => normalize(candidate) === target)
-  );
+  return resolveAlias(phrase, registry.actions);
 }
