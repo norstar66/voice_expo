@@ -8,9 +8,15 @@ import { StationId } from './stations/types';
 import { store } from './tickets/store';
 import { MockGenerator } from './mock-generator';
 import { inventoryStore } from './inventory/store';
+import { skill } from './alexa-handlers';
+import { ExpressAdapter } from 'ask-sdk-express-adapter';
 
 const app = express();
 app.use(cors({ origin: config.corsOrigin }));
+
+const adapter = new ExpressAdapter(skill, false, false);
+app.post('/alexa', adapter.getRequestHandlers());
+
 app.use(express.json());
 
 const server = http.createServer(app);
