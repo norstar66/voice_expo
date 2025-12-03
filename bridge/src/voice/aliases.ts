@@ -1,3 +1,18 @@
+import { StationId } from '../stations/types';
+
+const normalize = (value: string): string => value.trim().toLowerCase();
+
+const resolveAlias = <T extends { phrases: string[] }>(
+  phrase: string,
+  collection: T[]
+): T | undefined => {
+  const target = normalize(phrase);
+
+  return collection.find((entry) =>
+    entry.phrases.some((candidate) => normalize(candidate) === target)
+  );
+};
+
 export interface ActionAlias {
   phrases: string[]; // "calimari", "cali", "fried squid"
   canonicalItemId: string; // maps to your menu / StationItemMap
@@ -20,9 +35,16 @@ export interface AliasRegistry {
 }
 
 export function resolveItemAlias(phrase: string, registry: AliasRegistry): ActionAlias | undefined {
-  // normalize & match; later we can add fuzzy matching
+  return resolveAlias(phrase, registry.items);
 }
 
 export function resolveStationAlias(phrase: string, registry: AliasRegistry): StationAlias | undefined {
-  // ...
+  return resolveAlias(phrase, registry.stations);
+}
+
+export function resolveVoiceActionAlias(
+  phrase: string,
+  registry: AliasRegistry
+): VoiceActionAlias | undefined {
+  return resolveAlias(phrase, registry.actions);
 }
