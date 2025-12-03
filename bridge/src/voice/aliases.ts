@@ -1,3 +1,5 @@
+import { StationId } from '../stations/types';
+
 const normalize = (value: string): string => value.trim().toLowerCase();
 
 const resolveAlias = <T extends { phrases: string[] }>(
@@ -18,7 +20,7 @@ export interface ActionAlias {
 
 export interface StationAlias {
   phrases: string[]; // "grill", "saute", "on the line"
-  stationId: string;
+  stationId: StationId;
 }
 
 export interface VoiceActionAlias {
