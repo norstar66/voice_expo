@@ -31,20 +31,21 @@ The frontend will start on port 5173.
 
 ### 3. Open Station Views
 
-Open your browser to the following URLs to simulate different stations:
+Open your browser to [http://localhost:5173](http://localhost:5173).
 
-- **Grill/Saute1**: [http://localhost:5173/?stationId=GRILL/SAUTE1](http://localhost:5173/?stationId=GRILL/SAUTE1)
-- **Saute2**: [http://localhost:5173/?stationId=SAUTE2](http://localhost:5173/?stationId=SAUTE2)
-- **Fry**: [http://localhost:5173/?stationId=FRY](http://localhost:5173/?stationId=FRY)
-- **Pizza**: [http://localhost:5173/?stationId=PIZZA](http://localhost:5173/?stationId=PIZZA)
-- **Salad**: [http://localhost:5173/?stationId=SALAD](http://localhost:5173/?stationId=SALAD)
-- **Expo (Manager)**: [http://localhost:5173/?stationId=EXPO](http://localhost:5173/?stationId=EXPO)
+The application now uses a unified interface with tabs for navigation:
+
+- **Station Tabs**: Click the tabs (e.g., GRILL/SAUTE1, PIZZA, EXPO) to switch between different station views.
+- **HISTORY**: View completed orders and ticket history.
+- **PREP & ORDER**: Manage inventory, track waste, and view prep/order lists.
 
 ## Features
 
+- **Unified Tabbed Interface**: Easily switch between Stations, History, and Prep/Order views.
 - **Real-time Ticket Updates**: Tickets appear instantly on relevant stations.
 - **Station Filtering**: Each station only sees items assigned to it.
-- **Completed Orders View**: Switch between "Active Orders" and "Completed History" tabs.
+- **History View**: Review completed orders and performance metrics.
+- **Inventory Management**: Track stock, record waste, and manage prep lists in real-time.
 - **Mock Ticket Generator**: Simulate a busy kitchen with auto-generated orders.
 
 ## Controlling the Mock Generator
@@ -54,20 +55,37 @@ The mock generator is disabled by default. You can control it using the followin
 **Start the feed (generates a ticket every 10s):**
 
 ```bash
-curl -X POST http://localhost:8787/mock/start
+curl -X POST http://localhost:8080/mock/start
 ```
 
 **Stop the feed:**
 
 ```bash
-curl -X POST http://localhost:8787/mock/stop
+curl -X POST http://localhost:8080/mock/stop
 ```
 
 **Inject a single random ticket:**
 
 ```bash
-curl -X POST http://localhost:8787/mock/ticket
+curl -X POST http://localhost:8080/mock/ticket
 ```
+
+## Alexa Integration
+
+The Bridge includes an endpoint `/alexa` that serves as a fulfillment URL for an Alexa Skill.
+
+**Supported Intents:**
+
+- `GetInventoryIntent`: Checks the current inventory status.
+- `AddItemIntent`: Adds items to the prep list (e.g., "Add 5 tomatoes").
+
+## Inventory System
+
+The system tracks inventory for items.
+
+- **Sales**: When a ticket item is marked "DONE", the corresponding inventory count is decremented.
+- **Prep**: Items can be added via Alexa or other inputs to increase the "prepped" count.
+- **Real-time Updates**: Inventory changes are broadcast to connected clients via `INVENTORY_UPDATE` events.
 
 ## How it Works
 
