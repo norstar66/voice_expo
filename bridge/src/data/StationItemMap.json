@@ -41,5 +41,6 @@
     "SALAD": ["Bread service", "Beet Salad", "Bruschetta Pomodoro", "Caesar Salad", "Olive Miste", "Seasonal Salad", "Whipped Feta"],
     "SAUTE2": ["Bolognese", "Bucatini", "Chicken Parmesan", "Chicken Piccata", "Eggplant Parmesan", "Ravioli", "Risotto (Pork Chop & Kale)", "Sautéed Garlic Shrimp", "Sautéed Mushrooms", "Shrimp & Clams", "Spaghetti & Meatballs", "Tortellini", "Veal Marsala", "Veal Parmesan", "Veal Saltimbocca"],
     "SERVER": ["Italian Wedding Soup", "Seasonal Salad", "Zuppa del Giorno"]
-  }
+  },
+  "item_courses": {}
 }

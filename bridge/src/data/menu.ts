@@ -5,14 +5,11 @@ interface StationItemMap {
   stations: string[];
   item_to_stations: Record<string, string[]>;
   station_to_items: Record<string, string[]>;
+  item_courses: Record<string, 'appetizer' | 'main' | 'desert'>;
 }
 
-const mapStationId = (station: string): StationId => {
-  if (station === 'GRILL_S1') return 'GRILL/SAUTE1';
-  return station as StationId;
-};
-
-export const MENU_ITEMS = Object.entries((stationMap as StationItemMap).item_to_stations).map(([name, stations]) => ({
+export const MENU_ITEMS = Object.entries((stationMap as unknown as StationItemMap).item_to_stations).map(([name, stations]) => ({
   name,
-  stations: stations.map(mapStationId)
+  stations: stations as StationId[],
+  course: (stationMap as unknown as StationItemMap).item_courses?.[name] || 'main'
 }));

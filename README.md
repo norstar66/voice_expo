@@ -55,13 +55,13 @@ The mock generator is disabled by default. You can control it using the followin
 **Start the feed (generates a ticket every 10s):**
 
 ```bash
-curl -X POST http://localhost:8080/mock/start
+curl -X POST http://localhost:8787/mock/start
 ```
 
 **Stop the feed:**
 
 ```bash
-curl -X POST http://localhost:8080/mock/stop
+curl -X POST http://localhost:8787/mock/stop
 ```
 
 **Inject a single random ticket:**

@@ -9,6 +9,9 @@ export interface TicketItem {
   name: string;
   stations: StationId[];
   status: ItemStatus;
+  course?: 'appetizer' | 'main' | 'desert';
+  holdStatus?: 'HOLD' | 'FIRED';
+  firedAt?: number;
   startedAt?: number;
   completedAt?: number;
   completedBy?: StationId;

@@ -64,7 +64,9 @@ export class MockGenerator {
         id: uuidv4(),
         name: menuItem.name,
         stations: menuItem.stations,
-        status: 'NEW'
+        status: 'NEW',
+        course: menuItem.course,
+        holdStatus: menuItem.course === 'main' ? 'HOLD' : 'FIRED' // Simple logic: Mains on hold by default, Apps fired immediately
       });
     }
 

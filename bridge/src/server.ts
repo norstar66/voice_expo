@@ -110,9 +110,17 @@ io.on('connection', (socket) => {
       // Broadcast update to EXPO and relevant stations
       io.to('EXPO').emit('TICKET_UPDATED', updatedTicket);
       
-      const relevantStations = new Set<StationId>();
-      updatedTicket.items.forEach(item => item.stations.forEach(s => relevantStations.add(s)));
-      relevantStations.forEach(s => io.to(s).emit('TICKET_UPDATED', updatedTicket));
+      // Broadcast to ALL stations so they update status/remove if needed
+      io.emit('TICKET_UPDATED', updatedTicket);
+    }
+  });
+
+  socket.on('TICKET_FIRE_COURSE', ({ ticketId, course, stationId }: { ticketId: string, course: 'appetizer' | 'main' | 'desert', stationId: StationId }) => {
+    console.log(`[${stationId}] Firing course ${course} for ticket ${ticketId}`);
+    const updatedTicket = store.fireCourse(ticketId, course);
+
+    if (updatedTicket) {
+       io.emit('TICKET_UPDATED', updatedTicket);
     }
   });
 

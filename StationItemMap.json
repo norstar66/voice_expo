@@ -1,5 +1,8 @@
 {
-  "stations": ["FRY", "GRILL/S1", "PIZZA", "SALAD", "SAUTE2", "SERVER"],
+  "stations": ["FRY", "GRILL", "PIZZA", "SALAD", "SAUTE1", "SAUTE2", "SERVER"],
+  "station_groups": {
+    "SAUTE_GRILL": ["SAUTE1", "SAUTE2", "GRILL"]
+  },
   "item_to_stations": {
     "Margherita Pizza": ["PIZZA"],
     "Mushroom Pizza": ["PIZZA"],
@@ -21,21 +24,21 @@
     "Bucatini": ["SAUTE2"],
     "Tortellini": ["SAUTE2"],
     "Ravioli": ["SAUTE2"],
-    "Risotto (Pork Chop & Kale)": ["GRILL_S1", "SAUTE2"],
-    "Salmon": ["GRILL_S1"],
-    "Filet Mignon": ["GRILL_S1", "FRY"],
+    "Risotto (Pork Chop & Kale)": ["GRILL", "SAUTE2"],
+    "Salmon": ["GRILL"],
+    "Filet Mignon": ["GRILL", "FRY"],
     "Eggplant Parmesan": ["FRY", "SAUTE2"],
-    "Chicken Parmesan": ["GRILL_S1", "FRY"],
+    "Chicken Parmesan": ["SAUTE1", "FRY"],
     "Spaghetti & Meatballs": ["FRY"],
-    "Chicken Piccata": ["GRILL_S1"],
+    "Chicken Piccata": ["SAUTE1"],
     "Shrimp & Clams": ["SAUTE2"],
     "Bolognese": ["SAUTE2"],
-    "Veal Marsala": ["GRILL_S1"],
-    "Veal Saltimbocca": ["GRILL_S1", "FRY"],
-    "Veal Parmesan": ["GRILL_S1", "FRY"]
+    "Veal Marsala": ["SAUTE1"],
+    "Veal Saltimbocca": ["SAUTE1", "FRY"],
+    "Veal Parmesan": ["SAUTE1", "FRY"]
   },
   "station_to_items": {
-    "FRY": ["Chicken Parmesan", "Crispy Calamari", "Eggplant Parmesan", "Filet Mignon", "Polpette", "Spaghetti & Meatballs", "Toasted Cheese Ravioli", "Veal Parmesan", "Veal Saltimbocca", "Victor’s Fish & Chips"],
+    "FRY": ["Chicken Parmesan", "Crispy Calamari", "Eggplant Parmesan", "Pamesan Fries","Truffle Fries", "Polpette", "Spaghetti & Meatballs", "Toasted Cheese Ravioli", "Veal Parmesan", "Veal Saltimbocca", "Victor’s Fish & Chips"],
     "GRILL_S1": ["Chicken Parmesan", "Chicken Piccata", "Filet Mignon", "Risotto (Pork Chop & Kale)", "Salmon", "Sautéed Garlic Shrimp", "Sautéed Mushrooms", "Veal Marsala", "Veal Parmesan", "Veal Saltimbocca"],
     "PIZZA": ["Carne Pizza", "Margherita Pizza", "Mushroom Pizza", "Whipped Feta"],
     "SALAD": ["Bread service", "Beet Salad", "Bruschetta Pomodoro", "Caesar Salad", "Olive Miste", "Seasonal Salad", "Whipped Feta"],
